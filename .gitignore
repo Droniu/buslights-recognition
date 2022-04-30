@@ -1,2 +1,3 @@
 mlp.model
-.DS_Store
+.*
+!.gitignore
