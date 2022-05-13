@@ -15,7 +15,8 @@ async def root():
 
 @app.get("/status")
 async def get_status():
-    return {"status": getPrediction()}
+    status, confidence = getPrediction()
+    return {"status": status, "confidence": confidence}
 
 
 model = tf.keras.models.load_model("mlp.model")
@@ -26,24 +27,23 @@ def getPrediction():
         cap = cv2.VideoCapture(2)
 
         _, frame = cap.read()
-        print(frame)
         # this is required for macbook webcams
         if (not isinstance(frame, np.ndarray)):
             continue
         frame = convert(frame)
 
         prediction = model.predict(prepare(frame))
-        print(prediction)
 
         cap.release()
         break
-    result = True if prediction[0][0] < prediction[0][1] else False
-    return result
+    # result = True if prediction[0][0] < prediction[0][1] else False
+    # return result
 
+    # item() is for converting the numpy float to python float
     if prediction[0][0] < prediction[0][1]:
         result = True
-        confidence = prediction[0][0]
-    else
+        confidence = prediction[0][0].item()
+    else:
         result = False
-        confidence = prediction[0][1]
-    return result, confidence
+        confidence = prediction[0][1].item()
+    return result, round(confidence, 2)
