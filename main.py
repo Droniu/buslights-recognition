@@ -16,28 +16,28 @@ async def root():
 @app.get("/status")
 async def get_status():
     status, confidence = getPrediction()
-    return {"status": status, "confidence": confidence}
-
+    error = None if status is not None else "Camera not detected"
+    return {"status": status, "confidence": confidence, "error": error}
 
 model = tf.keras.models.load_model("mlp.model")
 
-
 def getPrediction():
-    while True:
+    for i in range(10):
         cap = cv2.VideoCapture(2)
 
         _, frame = cap.read()
         # this is required for macbook webcams
         if (not isinstance(frame, np.ndarray)):
             continue
-        frame = convert(frame)
 
+        frame = convert(frame)
         prediction = model.predict(prepare(frame))
 
         cap.release()
         break
-    # result = True if prediction[0][0] < prediction[0][1] else False
-    # return result
+
+    if frame is None:
+        return None, None
 
     # item() is for converting the numpy float to python float
     if prediction[0][0] < prediction[0][1]:
