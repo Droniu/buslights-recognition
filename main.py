@@ -23,7 +23,7 @@ model = tf.keras.models.load_model("mlp.model")
 
 def getPrediction():
     for i in range(10):
-        cap = cv2.VideoCapture(2)
+        cap = cv2.VideoCapture(0)
 
         _, frame = cap.read()
         # this is required for macbook webcams
