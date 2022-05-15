@@ -42,8 +42,8 @@ def getPrediction():
     # item() is for converting the numpy float to python float
     if prediction[0][0] < prediction[0][1]:
         result = True
-        confidence = prediction[0][0].item()
+        confidence = prediction[0][1].item()
     else:
         result = False
-        confidence = prediction[0][1].item()
+        confidence = prediction[0][0].item()
     return result, round(confidence, 2)
