@@ -21,8 +21,7 @@ def crop(image ,x_a, x_b, y_a, y_b):
     return image_croped
 
 def convert(frame): #transformations used for lerning model
-    frame = cv2.resize(frame, (256, 180))                
-    frame = crop(frame, 0, 180, 38, 218) 
+    frame = cv2.resize(frame, (180, 180))                
     return frame
     
 def prepare(frame):
